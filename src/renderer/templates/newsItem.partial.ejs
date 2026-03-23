@@ -1,5 +1,6 @@
-<a href="<%- newsItem.link %>" class="news__card">
-    <img src="<%- newsItem.thumbnail_url %>" alt="<%- newsItem.title.rendered %>">
-    <h2><%- newsItem.title.rendered %></h2>
-    <p><%- newsItem.excerpt.rendered %></p>
-</a>
+<div class="news-item">
+    <h3><%= newsItem.title %></h3>
+    <p class="date"><%= newsItem.pubDate %></p>
+    <p><%= newsItem.description %></p>
+    <a href="<%= newsItem.link %>">Читать далее</a>
+</div>

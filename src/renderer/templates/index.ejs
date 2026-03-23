@@ -8,26 +8,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+           * {
+        box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-        }
+    body {
+        font-family: 'Source Sans Pro', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+    }
+
+    .wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .news {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .news-item {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .news-item h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+
+    .news-item .date {
+        color: #666;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .news-item p {
+        color: #555;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .news-item a {
+        color: #0066cc;
+        text-decoration: none;
+    }
+
+    .news-item a:hover {
+        text-decoration: underline;
+    }
+
+    h2 {
+        color: #333;
+        border-bottom: 2px solid #0066cc;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
     </style>
 </head>
 
 <body>
     <header class="header">
-        <%- include('./header.ejs') %>
+        <%- include('./header.partial.ejs') %>
     </header>
 
     <div class="wrapper">
         <div class="news">
-            <% news.forEach(function(newsItem, index) { %>
-                <%- include('./newsItem.partial.ejs', { newsItem: newsItem }) %>
-            <% }) %>
+            <% for (const [rubricTitle, newsItems] of Object.entries(context)) { %>
+    <h2><%= rubricTitle %></h2>
+    <% newsItems.forEach(item => { %>
+        <%- include('./newsItem.partial.ejs', { newsItem: item }) %>
+    <% }) %>
+<% } %>
+
         </div>
     </div>
 </body>

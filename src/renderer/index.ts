@@ -1,65 +1,54 @@
-import ejs from 'ejs'
-import puppeteer from 'puppeteer'
-import type { RenderContext } from '../types.js'
+import ejs from 'ejs';
+import puppeteer from 'puppeteer';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+import type { RenderContext } from '../types.js';
+
 
 function renderMarkup(context: RenderContext): Promise<string> {
-  /**
-   * Рендерит информацию о новостях по рубрикам в html-строку по шаблону.
-   * 
-   * @remarks
-   * Получает на вход объект с новостями, передает его в шаблонизатор,
-   * возвращает сгенерированную строку с HTML.
-   *  
-   * @privateRemarks
-   * Для шаблонизации используется библиотека `ejs`, 
-   * которая отрисовывает данные в подготовленные шаблоны 
-   * `templates/index.ejs`, `templates/header.partial.ejs`, 
-   * `templates/newsItem.partial.ejs`.
-   * 
-   * @param context - объект с данными о новостях. 
-   * 
-   */
 
-  const mainTemplatePath = String(new URL('./templates/index.ejs', import.meta.url))
+const mainTemplatePath = decodeURIComponent(new URL('./templates/index.ejs', import.meta.url).pathname);
 
   return new Promise((resolve, reject) => {
-    ejs.renderFile(mainTemplatePath, { context }, (error: Error | null, html: string) => {
-      if (error) {
-        reject(error)
-      }
+    ejs.renderFile(
+      mainTemplatePath,
+      { context },
+      (error: Error | null, html: string) => {
+        if (error) {
+          reject(error);
+        }
 
-      resolve(html)
-    })
-  })
+        resolve(html);
+      },
+    );
+  });
 }
 
 export default async function savePdf(context: RenderContext) {
-  /**
-   * Сохраняет html-контент в pdf-файл.
-   * 
-   * @remarks
-   * Получает на вход строку с html-контентом, помещает 
-   * его на страницу браузера и сохраняет в pdf-формат.
-   * 
-   * Для сохранения использует файлы с названием вида 
-   * `vedomosti_yyyy_mm_dd_hh.pdf`. 
-   * 
-   * @privateRemarks
-   * Для сохранения используется библиотеку `puppeteer`, 
-   * которая отвечает за открытие браузера, создание страницы,
-   * наполнение ее html-содержимым и сохранение страницы в pdf.
-   * 
-   * @param context - строка с HTML-содержимым для выгрузки. 
-   * 
-   */
-  
-  const pathToSaveFile = ''
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hour = String(now.getHours()).padStart(2, '0');
+  const fileName = `vedomosti_${year}_${month}_${day}_${hour}.pdf`;
+
+  // const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const pdfDir = path.join(process.cwd(), 'pdf');
+  const filePath = path.join(pdfDir, fileName);
 
   try {
-    const htmlContent = await renderMarkup(context)
+    await fs.mkdir(pdfDir, { recursive: true });
+
+    const htmlContent = await renderMarkup(context);
     const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(htmlContent);
+    await page.pdf({ path: filePath, format: 'A4' });
     await browser.close();
+
+    console.log(`pdf сохранен: ${filePath}`);
   } catch (error) {
-    console.error(error)
+    console.error('ошибка при сохранении pdf:', error);
   }
 }
