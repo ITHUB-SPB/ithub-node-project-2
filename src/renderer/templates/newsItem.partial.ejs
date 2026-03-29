@@ -1,5 +1,5 @@
-<a href="<%- newsItem.link %>" class="news__card" style="display:block; text-decoration:none; color:black; border: 1px solid #eee; padding: 15px; border-radius: 8px;">
-    <h2 style="margin-top: 0; font-size: 1.2rem;"><%- newsItem.title %></h2>
-    <p style="color: #555; font-size: 0.95rem;"><%- newsItem.description %></p>
-    <small style="color: #999;"><%- newsItem.pubDate %></small>
+<a href="<%- newsItem.link %>" class="news__card">
+    <img src="<%- newsItem.thumbnail_url %>" alt="<%- newsItem.title.rendered %>">
+    <h2><%- newsItem.title.rendered %></h2>
+    <p><%- newsItem.excerpt.rendered %></p>
 </a>
