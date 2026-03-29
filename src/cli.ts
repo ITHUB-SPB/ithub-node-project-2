@@ -1,17 +1,19 @@
 import { confirm, checkbox } from "@inquirer/prompts";
 import * as types from "./types.js";
+import { loadRubrics } from "./loader/index.js";
 
-
-export async function userWantsToEdit(currentSettings: types.Settings): Promise<boolean> {
+export async function userWantsToEdit(
+  currentSettings: types.Settings,
+): Promise<boolean> {
   /**
    * Проверка на необходимость повторного ввода настроек.
-   * 
+   *
    * @remarks
    * Пользователю представляются текущие настройки, после чего он
    * отвечает, желает ли их изменить.
-   * 
+   *
    * @returns логическое значение о необходимости повторного ввода.
-   * 
+   *
    **/
 
   console.log(`Выбранные рубрики:\n${currentSettings.rubrics.join("\n\t")}`);
@@ -25,35 +27,46 @@ export async function userWantsToEdit(currentSettings: types.Settings): Promise<
 export async function getUserInput(): Promise<types.Settings> {
   /**
    * Интерактивный консольный ввод настроек.
-   * 
+   *
    * @remarks
    * Первым промптом предлагается выбрать рубрики,
    * вторым - дни недели, третьим - часы получения.
    * Во всех промптах выбор множественный.
-   * 
+   *
    * @privateRemarks
    * Используются промпты из @inquirer/prompts.
    *
-   * Для получения перечня рубрик перед выдачей 
+   * Для получения перечня рубрик перед выдачей
    * используется loader::loadRubrics().
-   * 
+   *
    * @returns промис, разрешающийся настройками
-   * 
-   * @throws если не удается получить настройки. 
-   * 
+   *
+   * @throws если не удается получить настройки.
+   *
    */
+  const rubricsList = await loadRubrics();
 
-  const choosenRubrics = await checkbox<types.RubricItem["id"]>({
-    message: "Выберите интересующие рубрики",
-    choices: [
-      { name: "Бизнес - Энергетика", value: "business-energy" },
-      { name: "Политика", value: "politics" },
-    ],
+  const rubricChoices = rubricsList.map((r: any) => ({
+    name: r.title,
+    value: r.id,
+  }));
+
+  const choosenRubrics = await checkbox({
+    message: "выберите рубрики",
+    choices: rubricChoices,
   });
 
   const choosenDaysOfWeek = await checkbox<types.DayOfWeek>({
     message: "В какие дни желаете получать новости?",
-    choices: [],
+    choices: [
+      { name: "Понедельник", value: 0 },
+      { name: "Вторник", value: 1 },
+      { name: "Среда", value: 2 },
+      { name: "Четверг", value: 3 },
+      { name: "Пятница", value: 4 },
+      { name: "Суббота", value: 5 },
+      { name: "Воскресенье", value: 6 },
+    ],
   });
 
   const choosenTime = await checkbox<types.Time>({
@@ -74,7 +87,7 @@ export async function getUserInput(): Promise<types.Settings> {
     rubrics: choosenRubrics,
     schedule: {
       daysOfWeek: choosenDaysOfWeek,
-      time: choosenTime
-    }
+      time: choosenTime,
+    },
   };
 }
