@@ -1,0 +1,13 @@
+{
+  "rubrics": [
+    "business.xml"
+  ],
+  "schedule": {
+    "daysOfWeek": [
+      0
+    ],
+    "time": [
+      "07:00"
+    ]
+  }
+}

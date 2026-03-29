@@ -4,7 +4,7 @@ function baseFetch(url: string): Promise<string> {
   return fetch(url)
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Некорректный ответ сервера");
+        throw new Error("некорректный ответ");
       }
       return response.text();
     })
@@ -13,7 +13,7 @@ function baseFetch(url: string): Promise<string> {
 export function fetchNews(rubricUrl: string): Promise<string> {
   return baseFetch(rubricUrl)
     .catch((error) => {
-      console.error(`Ошибка при получении новостей по ${rubricUrl}`);
+      console.error(`ошибка новостей ${rubricUrl}`);
       throw error
     });
 }
@@ -21,7 +21,7 @@ export function fetchNews(rubricUrl: string): Promise<string> {
 export function fetchRubrics(): Promise<string> {
   return baseFetch(RUBRICS_URL)
     .catch((error) => {
-      console.error("Ошибка при получении рубрик");
+      console.error("ошибка рубрик");
       throw error
     });
 }
