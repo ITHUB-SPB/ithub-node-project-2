@@ -1,13 +1,12 @@
 {
   "rubrics": [
-    "management.xml"
+    "business-transport.xml",
+    "business-agriculture.xml"
   ],
   "schedule": {
     "daysOfWeek": [
-      3
+      1
     ],
-    "time": [
-      "09:00"
-    ]
+    "time": []
   }
 }

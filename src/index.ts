@@ -57,9 +57,8 @@ export default async function run() {
         console.log("Возврат в режим ожидания...\n");
       }
     }
-  }, 60_000); // Проверка каждую минуту
+  }, 60_000);
 
-  // Грациозное завершение по Ctrl+C
   process.on("SIGINT", () => {
     console.log("\n\nПолучен сигнал завершения работы (SIGINT).");
     console.log("Очистка интервалов и выход...");

@@ -32,10 +32,8 @@ export default async function savePdf(context: RenderContext) {
   const pathToSaveFile = `vedomosti_${yyyy}_${mm}_${dd}_${hh}.pdf`;
 
   try {
-    console.log("Генерация HTML...");
     const htmlContent = await renderMarkup(context);
 
-    console.log("Запуск Puppeteer...");
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
@@ -43,7 +41,7 @@ export default async function savePdf(context: RenderContext) {
     await page.pdf({ path: pathToSaveFile, format: "A4", printBackground: true });
 
     await browser.close();
-    console.log(`Успех: Отчет сохранен как ${pathToSaveFile}`);
+    console.log(`Отчет сохранен как ${pathToSaveFile}`);
   } catch (error) {
     console.error("Ошибка при генерации PDF: ", error);
   }

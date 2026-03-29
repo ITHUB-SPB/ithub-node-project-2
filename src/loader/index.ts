@@ -12,13 +12,10 @@ export async function loadRubrics(): Promise<types.RubricItem[]> {
     const { rubrics, lastModified } = await storage.loadRubrics();
     const ONE_DAY = 24 * 60 * 60 * 1000;
 
-    // Если данные свежее одних суток
     if (new Date().getTime() - new Date(lastModified).getTime() < ONE_DAY) {
       return rubrics;
     }
-  } catch (error) {
-    // Если файла нет (FileNotFoundError), игнорируем и парсим свежие
-  }
+  } catch (error) {}
 
   const freshRubrics = await fetcher.fetchRubrics().then(parser.parseRubrics);
   await storage.writeRubrics(freshRubrics);
@@ -31,7 +28,6 @@ export default async function load(
 ): Promise<types.RenderContext> {
   const allRubrics = await loadRubrics();
 
-  // Фильтруем рубрики по выбранным в настройках ID
   const filteredRubrics = allRubrics.filter((r) => rubricsOfInterest.includes(r.id));
 
   const news: { [key: string]: types.NewsItem[] } = {};
