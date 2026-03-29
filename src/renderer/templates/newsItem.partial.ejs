@@ -1,5 +1,6 @@
-<a href="<%- newsItem.link %>" class="news__card">
-    <img src="<%- newsItem.thumbnail_url %>" alt="<%- newsItem.title.rendered %>">
-    <h2><%- newsItem.title.rendered %></h2>
-    <p><%- newsItem.excerpt.rendered %></p>
-</a>
+<div class="news-item">
+  <h3><a href="<%= item.link %>"><%= item.title %></a></h3>
+  <p class="meta">Автор: <%= item.author || 'Не указан' %> | Дата: <%= new Date(item.pubDate).toLocaleString('ru-RU') %></p>
+  <p class="description"><%- item.description %></p>
+  <hr>
+</div>

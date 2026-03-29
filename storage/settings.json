@@ -1,0 +1,13 @@
+{
+  "rubrics": [
+    "business-energy"
+  ],
+  "schedule": {
+    "daysOfWeek": [
+      6
+    ],
+    "time": [
+      "09:00"
+    ]
+  }
+}

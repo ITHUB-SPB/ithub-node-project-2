@@ -2,48 +2,20 @@ import { readFile, writeFile } from "node:fs/promises";
 import { FileNotFoundError } from "../exceptions.js";
 import type { Settings } from "../types.js";
 
-const SETTINGS_PATH = new URL("./settings.json", import.meta.url);
+const SETTINGS_PATH = new URL("../../storage/settings.json", import.meta.url);
 
-export async function writeSettings(settings: Settings) {
-    /**
-     * Осуществляет асинхронную запись настроек в файл.
-     *
-     * @privateRemarks
-     * Используется промисифицированная функция fs/promises::writeFile
-     * 
-     * @param settings - объект с настройками
-     * 
-     * @returns Промис, который разрешается при успешной записи,
-     * отклоняется при возникновении ошибок записи
-     *
-     */
-
-    try {
-        return
-    } catch (error) {
-
-    }
+export async function writeSettings(settings: Settings): Promise<void> {
+    await writeFile(SETTINGS_PATH, JSON.stringify(settings, null, 2));
 }
 
 export async function loadSettings(): Promise<Settings> {
-    /**
-     * Осуществляет асинхронное чтение настроек из файла.
-     *
-     * @privateRemarks
-     * Используется промисифицированная функция fs/promises::readFile
-     *  
-     * @returns Промис, который разрешается объектом с настройками,
-     * отклоняется при возникновении ошибок, в том числе при
-     * отсутствии файла
-     * 
-     * @throws {@link FileNotFoundError}
-     * Причина отклонения промиса в случае отсутствия файла
-     * 
-     */
-
     try {
-        return
+        const data = await readFile(SETTINGS_PATH, "utf-8");
+        return JSON.parse(data) as Settings;
     } catch (error) {
-
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+            throw new FileNotFoundError("Файл не найден: settings.json" as `Файл не найден: ${string}.json`);
+        }
+        throw error;
     }
 }
