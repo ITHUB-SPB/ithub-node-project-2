@@ -6,26 +6,6 @@ import load from "./loader/index.js";
 import savePdf from "./renderer/index.js";
 
 export default async function run() {
-  /**
-   * Главная функция для запуска приложения.
-   *
-   * @remarks
-   * При первичном запуске пользователь выбирает интересующие его
-   * рубрики и расписание получения новостей, настройки сохраняются.
-   *
-   * При дальнейших запусках у пользователя есть возможность изменить
-   * настройки либо согласиться с уже заданными.
-   *
-   * Далее процесс ожидает наступления установленного времени,
-   * совершает загрузку новостей по выбранным рубрикам, после чего
-   * сохраняет их в pdf-файл, и продолжает работу в фоновом режиме.
-   *
-   * @throws если не удается получить настройки.
-   *
-   * @public
-   *
-   */
-
   let settings: types.Settings | null = null;
 
   try {
@@ -39,36 +19,53 @@ export default async function run() {
       error instanceof exceptions.SettingsOutdatedError
     ) {
       settings = await cli.getUserInput();
-      storage.writeSettings(settings);
+      await storage.writeSettings(settings);
     } else {
       throw new Error("Необходимо задать настройки");
     }
   }
 
-  setInterval(async () => {
+  console.log("\nПриложение переведено в фоновый режим.");
+  console.log("Ожидание расписания... (Нажмите Ctrl+C для выхода)\n");
+
+  let isTaskRunning = false;
+
+  const scheduleInterval = setInterval(async () => {
+    if (!settings || isTaskRunning) return;
+
     const now = new Date();
     const currentDay = now.getDay() as types.DayOfWeek;
-    const currentTime = now.toTimeString().slice(0, 5) as types.Time;
 
-    console.log(`[${currentTime}] время`);
+    const h = String(now.getHours()).padStart(2, "0");
+    const m = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${h}:${m}` as types.Time;
 
     if (
       settings.schedule.daysOfWeek.includes(currentDay) &&
       settings.schedule.time.includes(currentTime)
     ) {
-      console.log("загрузка");
+      isTaskRunning = true;
+      console.log(`[${currentTime}] Наступило время выгрузки! Парсинг новостей...`);
+
       try {
         const news = await load(settings.rubrics);
-        console.log(`загружено: ${Object.values(news).flat().length}`);
-
-        console.log("pdf создается");
         await savePdf(news);
-        console.log("pdf готов");
-      } catch (error) {
-        console.error("ошибка:", error);
+      } catch (err) {
+        console.error("Произошла ошибка при выполнении фоновой задачи:", err);
+      } finally {
+        isTaskRunning = false;
+        console.log("Возврат в режим ожидания...\n");
       }
     }
-  }, 60_000);
+  }, 60_000); // Проверка каждую минуту
+
+  // Грациозное завершение по Ctrl+C
+  process.on("SIGINT", () => {
+    console.log("\n\nПолучен сигнал завершения работы (SIGINT).");
+    console.log("Очистка интервалов и выход...");
+    clearInterval(scheduleInterval);
+    process.exit(0);
+  });
 }
 
 run();

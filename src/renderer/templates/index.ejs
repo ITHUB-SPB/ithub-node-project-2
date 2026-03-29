@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Актуальные новости</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Source Sans Pro', sans-serif; padding: 20px; }
+        .rubric-title { color: #333; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+        .news { display: flex; flex-direction: column; gap: 20px; }
     </style>
 </head>
-
 <body>
     <header class="header">
-        <%- include('./header.ejs') %>
+        <%- include('./header.partial.ejs') %>
     </header>
-
     <div class="wrapper">
         <div class="news">
-            <% news.forEach(function(newsItem, index) { %>
-                <%- include('./newsItem.partial.ejs', { newsItem: newsItem }) %>
-            <% }) %>
+            <% for (const [rubricName, newsItems] of Object.entries(newsContext)) { %>
+                <h1 class="rubric-title"><%= rubricName %></h1>
+                <% newsItems.forEach(function(newsItem) { %>
+                    <%- include('./newsItem.partial.ejs', { newsItem: newsItem }) %>
+                <% }) %>
+            <% } %>
         </div>
     </div>
 </body>
-
 </html>

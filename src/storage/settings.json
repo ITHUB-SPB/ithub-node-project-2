@@ -1,7 +1,13 @@
 {
-  "rubrics": [],
+  "rubrics": [
+    "management.xml"
+  ],
   "schedule": {
-    "daysOfWeek": [],
-    "time": []
+    "daysOfWeek": [
+      3
+    ],
+    "time": [
+      "09:00"
+    ]
   }
 }
