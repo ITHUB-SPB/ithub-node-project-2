@@ -1,0 +1,355 @@
+{
+  "rubrics": [
+    {
+      "title": "business",
+      "id": "business.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business.xml"
+    },
+    {
+      "title": "energy",
+      "id": "energy.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/energy.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "industry",
+      "id": "industry.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/industry.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "transport",
+      "id": "transport.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/transport.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "agriculture",
+      "id": "agriculture.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/agriculture.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "retail",
+      "id": "retail.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/retail.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "sport",
+      "id": "sport.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/business/sport.xml",
+      "parentId": "business"
+    },
+    {
+      "title": "economics",
+      "id": "economics.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics.xml"
+    },
+    {
+      "title": "macro",
+      "id": "macro.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics/macro.xml",
+      "parentId": "economics"
+    },
+    {
+      "title": "state_investments",
+      "id": "state_investments.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics/state_investments.xml",
+      "parentId": "economics"
+    },
+    {
+      "title": "global",
+      "id": "global.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics/global.xml",
+      "parentId": "economics"
+    },
+    {
+      "title": "taxes",
+      "id": "taxes.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics/taxes.xml",
+      "parentId": "economics"
+    },
+    {
+      "title": "regulations",
+      "id": "regulations.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/economics/regulations.xml",
+      "parentId": "economics"
+    },
+    {
+      "title": "finance",
+      "id": "finance.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/finance.xml"
+    },
+    {
+      "title": "banks",
+      "id": "banks.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/finance/banks.xml",
+      "parentId": "finance"
+    },
+    {
+      "title": "markets",
+      "id": "markets.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/finance/markets.xml",
+      "parentId": "finance"
+    },
+    {
+      "title": "players",
+      "id": "players.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/finance/players.xml",
+      "parentId": "finance"
+    },
+    {
+      "title": "insurance",
+      "id": "insurance.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/finance/insurance.xml",
+      "parentId": "finance"
+    },
+    {
+      "title": "opinion",
+      "id": "opinion.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/opinion.xml"
+    },
+    {
+      "title": "details",
+      "id": "details.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/opinion/details.xml",
+      "parentId": "opinion"
+    },
+    {
+      "title": "analytics",
+      "id": "analytics.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/opinion/analytics.xml",
+      "parentId": "opinion"
+    },
+    {
+      "title": "editorial",
+      "id": "editorial.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/opinion/editorial.xml",
+      "parentId": "opinion"
+    },
+    {
+      "title": "politics",
+      "id": "politics.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics.xml"
+    },
+    {
+      "title": "official",
+      "id": "official.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/official.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "democracy",
+      "id": "democracy.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/democracy.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "international",
+      "id": "international.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/international.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "security_law",
+      "id": "security_law.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/security_law.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "social",
+      "id": "social.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/social.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "foreign",
+      "id": "foreign.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/politics/foreign.xml",
+      "parentId": "politics"
+    },
+    {
+      "title": "technology",
+      "id": "technology.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology.xml"
+    },
+    {
+      "title": "https://www.vedomosti.ru/rss/rubric/technology/telecom",
+      "id": "telecom.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/telecom.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "internet",
+      "id": "internet.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/internet.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "media",
+      "id": "media.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/media.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "it_business",
+      "id": "it_business.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/it_business.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "personal_technologies",
+      "id": "personal_technologies.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/personal_technologies.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "hi_tech",
+      "id": "hi_tech.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/technology/hi_tech.xml",
+      "parentId": "technology"
+    },
+    {
+      "title": "realty",
+      "id": "realty.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty.xml"
+    },
+    {
+      "title": "housing",
+      "id": "housing.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty/housing.xml",
+      "parentId": "realty"
+    },
+    {
+      "title": "commercial_property",
+      "id": "commercial_property.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty/commercial_property.xml",
+      "parentId": "realty"
+    },
+    {
+      "title": "infrastructure",
+      "id": "infrastructure.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty/infrastructure.xml",
+      "parentId": "realty"
+    },
+    {
+      "title": "https://www.vedomosti.ru/rss/rubric/realty/architecture",
+      "id": "architecture.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty/architecture.xml",
+      "parentId": "realty"
+    },
+    {
+      "title": "districts",
+      "id": "districts.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/realty/districts.xml",
+      "parentId": "realty"
+    },
+    {
+      "title": "auto",
+      "id": "auto.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto.xml"
+    },
+    {
+      "title": "auto_industry",
+      "id": "auto_industry.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto/auto_industry.xml",
+      "parentId": "auto"
+    },
+    {
+      "title": "cars",
+      "id": "cars.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto/cars.xml",
+      "parentId": "auto"
+    },
+    {
+      "title": "commercial_vehicles",
+      "id": "commercial_vehicles.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto/commercial_vehicles.xml",
+      "parentId": "auto"
+    },
+    {
+      "title": "car_design",
+      "id": "car_design.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto/car_design.xml",
+      "parentId": "auto"
+    },
+    {
+      "title": "test_drive",
+      "id": "test_drive.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/auto/test_drive.xml",
+      "parentId": "auto"
+    },
+    {
+      "title": "management",
+      "id": "management.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management.xml"
+    },
+    {
+      "title": "career",
+      "id": "career.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management/career.xml",
+      "parentId": "management"
+    },
+    {
+      "title": "management",
+      "id": "management.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management/management.xml",
+      "parentId": "management"
+    },
+    {
+      "title": "compensation",
+      "id": "compensation.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management/compensation.xml",
+      "parentId": "management"
+    },
+    {
+      "title": "entrepreneurship",
+      "id": "entrepreneurship.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management/entrepreneurship.xml",
+      "parentId": "management"
+    },
+    {
+      "title": "education",
+      "id": "education.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/management/education.xml",
+      "parentId": "management"
+    },
+    {
+      "title": "lifestyle",
+      "id": "lifestyle.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle.xml"
+    },
+    {
+      "title": "leisure",
+      "id": "leisure.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle/leisure.xml",
+      "parentId": "lifestyle"
+    },
+    {
+      "title": "culture",
+      "id": "culture.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle/culture.xml",
+      "parentId": "lifestyle"
+    },
+    {
+      "title": "luxury",
+      "id": "luxury.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle/luxury.xml",
+      "parentId": "lifestyle"
+    },
+    {
+      "title": "interview",
+      "id": "interview.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle/interview.xml",
+      "parentId": "lifestyle"
+    },
+    {
+      "title": "lifeline",
+      "id": "lifeline.xml",
+      "link": "https://www.vedomosti.ru/rss/rubric/lifestyle/lifeline.xml",
+      "parentId": "lifestyle"
+    }
+  ],
+  "last_modified": "2026-03-21T19:58:23.155Z"
+}

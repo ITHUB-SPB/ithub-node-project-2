@@ -2,32 +2,40 @@ import * as fetcher from "./fetcher.js";
 import * as parser from "./parser.js";
 import * as storage from "../storage/index.js";
 import * as types from "../types.js";
+import { isRubricsExpired } from "../storage/rubrics.js";
+import { fetchNews } from "./fetcher.js";
+
 
 function loadNews(rubricUrl: string): Promise<types.NewsItem[]> {
-  return fetcher
-    .fetchNews("https://www.vedomosti.ru/rss/rubric/business.xml")
-    .then(parser.parseNews);
+  return fetchNews(rubricUrl).then(parser.parseNews);
+
 }
 
-async function loadRubrics(): Promise<types.RubricItem[]> {
-  const { rubrics, lastModified } = await storage.loadRubrics()
 
-  if (new Date(lastModified) > new Date()) {
-    return rubrics;
+async function loadRubrics(): Promise<types.RubricItem[]> {
+  try {
+    const { rubrics, lastModified } = await storage.loadRubrics();
+    if (!isRubricsExpired(lastModified)) {
+      return rubrics;
+    }
+  } catch (err) {
+
   }
 
-  const freshRubrics = await fetcher.fetchRubrics().then(parser.parseRubrics)
-
-  storage.writeRubrics(freshRubrics);
-
+  const freshRubrics = await fetcher.fetchRubrics().then(parser.parseRubrics);
+  await storage.writeRubrics(freshRubrics);
   return freshRubrics;
 }
 
-export default async function load(rubricsOfInterest: types.RubricItem["id"][]): Promise<types.RenderContext> {
+export default async function load(
+  rubricsOfInterest: types.RubricItem["id"][],
+): Promise<types.RenderContext> {
   const allRubrics = await loadRubrics();
 
-  // filter by rubrics set in settings
-  const filteredRubrics = allRubrics;
+
+const filteredRubrics = allRubrics.filter(rubric => 
+  rubricsOfInterest.includes(rubric.id)
+);
 
   const news: { [key: string]: types.NewsItem[] } = {};
 
@@ -37,3 +45,5 @@ export default async function load(rubricsOfInterest: types.RubricItem["id"][]):
 
   return news;
 }
+
+export { loadRubrics };
