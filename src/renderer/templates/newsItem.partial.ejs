@@ -1,6 +1,6 @@
 <div class="news-item">
-    <h3><%= newsItem.title %></h3>
-    <p class="date"><%= newsItem.pubDate %></p>
-    <p><%= newsItem.description %></p>
-    <a href="<%= newsItem.link %>">Читать далее</a>
+  <h3><a href="<%= item.link %>"><%= item.title %></a></h3>
+  <p class="meta">Автор: <%= item.author || 'Не указан' %> | Дата: <%= new Date(item.pubDate).toLocaleString('ru-RU') %></p>
+  <p class="description"><%- item.description %></p>
+  <hr>
 </div>

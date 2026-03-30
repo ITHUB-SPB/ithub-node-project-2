@@ -1,34 +1,47 @@
 import { XMLParser } from "fast-xml-parser";
-import { parse } from 'node-html-parser';
+import htmlParser from "node-html-parser";
 import * as types from "../types.js";
 
 export function parseNews(rawData: string): types.NewsItem[] {
   const parser = new XMLParser();
   const parsedData = parser.parse(rawData);
-  return parsedData["rss"]["channel"]["item"];
+  const items = parsedData["rss"]["channel"]["item"];
+  return items.map((item: any) => ({
+    title: item.title || "",
+    link: item.link || "",
+    author: item.author || "",
+    enclosure: item.enclosure?.url,
+    description: item.description || "",
+    pubDate: item.pubDate || "",
+  }));
 }
 
 export function parseRubrics(rawData: string): types.RubricItem[] {
-  const root = parse(rawData);
+  const root = htmlParser.parse(rawData);
+  const rubrics: types.RubricItem[] = [];
+
   const links = root.querySelectorAll('a[href*="/rss/rubric/"]');
 
-return links
-  .map(link => {
-    const href = link.getAttribute('href') || '';
-    const title = link.textContent.trim();
-    const pathParts = href.split('/rss/rubric/')[1]?.split('/') || [];
-    const id = pathParts[pathParts.length - 1];
-    
-    if (!id) return undefined;
+  for (const link of links) {
+    const href = link.getAttribute("href");
+    const title = link.text.trim();
 
-    const parentId = pathParts.length > 1 ? pathParts[0] : undefined;
+    if (href && title) {
+      const fullUrl = href.startsWith("http")
+        ? href
+        : `https://www.vedomosti.ru${href}`;
+      const id = href
+        .replace("/rss/rubric/", "")
+        .replace(/\.xml$/, "")
+        .replace(/\//g, "-");
 
-    return {
-      title,
-      id,
-      link: href.startsWith('http') ? href : `https://www.vedomosti.ru${href}`,
-      ...(parentId && { parentId })
-    } as types.RubricItem;
-  })
-  .filter((item): item is types.RubricItem => item !== undefined);
+      rubrics.push({
+        title: title,
+        id: id,
+        link: fullUrl,
+      });
+    }
+  }
+
+  return rubrics;
 }

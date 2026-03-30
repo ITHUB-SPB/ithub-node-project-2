@@ -1,72 +1,79 @@
 import * as cli from "./cli.js";
-import * as storage from "./storage/index.js";
-import * as types from "./types.js";
-import * as exceptions from "./exceptions.js";
+import * as storage from './storage/index.js'
+import * as types from './types.js'
+import * as exceptions from './exceptions.js'
 import load from "./loader/index.js";
 import savePdf from "./renderer/index.js";
 
-export default async function run() {
-  /**
-   * Главная функция для запуска приложения.
-   * @remarks
-   * При первичном запуске пользователь выбирает интересующие его
-   * рубрики и расписание получения новостей, настройки сохраняются.
-   *
-   * При дальнейших запусках у пользователя есть возможность изменить
-   * настройки либо согласиться с уже заданными.
-   *
-   * Далее процесс ожидает наступления установленного времени,
-   * совершает загрузку новостей по выбранным рубрикам, после чего
-   * сохраняет их в pdf-файл, и продолжает работу в фоновом режиме.
-   * @throws если не удается получить настройки.
-   *
-   * @public
-   *
-   */
+let isRunning = true;
 
+function shouldRunNow(settings: types.Settings): boolean {
+  const now = new Date();
+  const currentDay = now.getDay();
+  const currentHour = String(now.getHours()).padStart(2, '0');
+  const currentMinute = String(now.getMinutes()).padStart(2, '0');
+  const currentTime = `${currentHour}:${currentMinute}` as types.Time;
+
+  const dayMatches = settings.schedule.daysOfWeek.includes(currentDay as types.DayOfWeek);
+  const timeMatches = settings.schedule.time.includes(currentTime);
+
+  return dayMatches && timeMatches;
+}
+
+async function processNews(settings: types.Settings): Promise<void> {
+  try {
+    console.log('\n=== Начало обработки новостей ===');
+    const news = await load(settings.rubrics);
+    await savePdf(news);
+    console.log('=== Обработка завершена успешно ===\n');
+  } catch (error) {
+    console.error('Ошибка при обработке новостей:', error);
+  }
+}
+
+export default async function run() {
   let settings: types.Settings | null = null;
 
   try {
     settings = await storage.loadSettings();
     if (await cli.userWantsToEdit(settings)) {
-      throw new exceptions.SettingsOutdatedError();
+      throw new exceptions.SettingsOutdatedError()
     }
   } catch (error) {
-    if (
-      error instanceof exceptions.FileNotFoundError ||
-      error instanceof exceptions.SettingsOutdatedError
-    ) {
+    if (error instanceof exceptions.FileNotFoundError || error instanceof exceptions.SettingsOutdatedError) {
       settings = await cli.getUserInput();
-      storage.writeSettings(settings);
+      await storage.writeSettings(settings);
+      console.log('Настройки сохранены');
     } else {
-      throw new Error("настройки");
+      throw new Error("Необходимо задать настройки")
     }
   }
 
-  setInterval(async () => {
-    const now = new Date();
-    const currentDay = now.getDay() as types.DayOfWeek;
-    const currentTime = now.toTimeString().slice(0, 5) as types.Time;
+  console.log('\nПриложение запущено в фоновом режиме.');
+  console.log('Ожидание времени выгрузки...');
+  console.log('Нажмите Ctrl+C для выхода\n');
 
-    console.log(`[${currentTime}] время`);
+  const CHECK_INTERVAL = 60 * 1000;
 
-    if (
-      settings.schedule.daysOfWeek.includes(currentDay) &&
-      settings.schedule.time.includes(currentTime)
-    ) {
-      console.log("загрузка");
-      try {
-        const news = await load(settings.rubrics);
-        console.log(`загружено: ${Object.values(news).flat().length}`);
-
-        console.log("pdf создается");
-        await savePdf(news);
-        console.log("pdf готов");
-      } catch (error) {
-        console.error("ошибка:", error);
-      }
+  const intervalId = setInterval(async () => {
+    if (!isRunning) {
+      clearInterval(intervalId);
+      console.log('\nПриложение остановлено');
+      process.exit(0);
     }
-  }, 60_000);
+
+    if (shouldRunNow(settings!)) {
+      await processNews(settings!);
+    }
+  }, CHECK_INTERVAL);
+
+  process.on('SIGINT', () => {
+    console.log('\nПолучен сигнал завершения...');
+    isRunning = false;
+  });
 }
 
-run();
+run().catch(error => {
+  console.error('Критическая ошибка:', error);
+  process.exit(1);
+}); 

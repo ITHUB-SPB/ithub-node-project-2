@@ -1,33 +1,37 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs";
 import { FileNotFoundError } from "../exceptions.js";
 import type { Rubrics, RubricsStorage } from "../types.js";
 
-const RUBRICS_PATH = new URL("./rubrics.json", import.meta.url);
+const RUBRICS_PATH = new URL("../../storage/rubrics.json", import.meta.url);
 
-export async function writeRubrics(rubrics: Rubrics["rubrics"]): Promise<void> {
-    const data: RubricsStorage = {
-    rubrics: rubrics,
-    lastModified: new Date().toISOString()
-};
-
-    const jsonString = JSON.stringify(data, null, 2);
-    await writeFile(RUBRICS_PATH, jsonString, 'utf8');
+export function writeRubrics(rubrics: Rubrics["rubrics"]): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const data: RubricsStorage = {
+            rubrics,
+            lastModified: new Date().toISOString()
+        };
+        writeFile(RUBRICS_PATH, JSON.stringify(data, null, 2), (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
 }
 
-export async function loadRubrics(): Promise<RubricsStorage> {
-    try {
-        const data = await readFile(RUBRICS_PATH, 'utf8');
-        return JSON.parse(data);
-    } catch (err) {
-        if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-            throw new FileNotFoundError(`Файл не найден: rubrics.json`);
-        }
-        throw err;
-    }
-}
-export function isRubricsExpired(lastModified: string): boolean {
-    const lastDate = new Date(lastModified).getTime();
-    const now = new Date().getTime();
-    const dayInMs = 24 * 60 * 60 * 1000; 
-    return (now - lastDate) > dayInMs;
+export function loadRubrics(): Promise<RubricsStorage> {
+    return new Promise((resolve, reject) => {
+        readFile(RUBRICS_PATH, "utf-8", (err, data) => {
+            if (err) {
+                if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+                    reject(new FileNotFoundError("Файл не найден: rubrics.json" as `Файл не найден: ${string}.json`));
+                } else {
+                    reject(err);
+                }
+            } else {
+                resolve(JSON.parse(data) as RubricsStorage);
+            }
+        });
+    });
 }

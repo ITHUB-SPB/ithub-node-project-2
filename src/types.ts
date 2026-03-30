@@ -18,7 +18,7 @@ export type RubricItem = {
 };
 
 export type RenderContext = {
-    [key: RubricItem["title"]]: NewsItem[]
+    [key: string]: NewsItem[]
 }
 
 export type Rubrics = {
@@ -35,4 +35,4 @@ export type Settings = {
         daysOfWeek: DayOfWeek[];
         time: Time[];
     };
-};
+}
